@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Wpf_EF_Mvvm_sample"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        Title="MainWindow" Height="600" Width="800" WindowStartupLocation="CenterScreen">
+        Title="Haupt-Fenster" Height="600" Width="800" WindowStartupLocation="CenterScreen">
 
     <!-- Ohne Einbindung der Resourcen kommt es bei InitializeComponents zu einer Expception
 -->
