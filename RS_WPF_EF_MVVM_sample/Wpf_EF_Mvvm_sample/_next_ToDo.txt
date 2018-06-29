@@ -1,0 +1,6 @@
+﻿2018-06-29 GitHub-Integration
+
+Erstellen einer Form für Edit, View und Delete, aufrufbar mit Doppelklick auf die Zeile
+Durchreichen der Commands von BookEdit ins ViewModel
+Erstellen einer BookViewModel und einer AuthorViewModel
+Arbeit mit Actions

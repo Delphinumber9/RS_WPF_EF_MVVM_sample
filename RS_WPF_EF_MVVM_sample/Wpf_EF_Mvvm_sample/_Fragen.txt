@@ -1,0 +1,9 @@
+﻿1. Nach dem Löschen, wie Refresh des Datagrids?
+BooksAll ans Interface ObservableCollection?
+
+@Leonardo For that you would need your objects to implement the INotifyPropertyChanged interface.
+https://msdn.microsoft.com/en-us/library/system.componentmodel.inotifypropertychanged%28v=vs.110%29.aspx
+
+2. Wie Hinzufügen von Sätzen, ich meine in der Oberfläche, bevor eine Entität zugefügt wird.
+3. SelectedItem setzen, z.B. nach add, aber auch sonst
+==> nach Add() und FillBookAll; this.SelectedBookAll = book;

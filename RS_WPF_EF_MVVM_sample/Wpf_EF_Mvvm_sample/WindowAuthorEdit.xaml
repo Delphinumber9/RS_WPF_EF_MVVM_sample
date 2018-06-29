@@ -1,0 +1,64 @@
+﻿<Window x:Name="WindowsAuthorEdit" 
+        x:Class="Wpf_EF_Mvvm_sample.WindowAuthorEdit"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Wpf_EF_Mvvm_sample"
+        mc:Ignorable="d"
+        Title="WindowAuthorEdit" Height="300" Width="620" 
+        xmlns:vm="clr-namespace:Wpf_EF_Mvvm_sample"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <vm:MainWindowViewModel x:Key="vm" />
+        </ResourceDictionary>
+    </Window.Resources>
+    <!-- DataContext war notwendig, neben der RecourcenDictionary-->
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="37*"/>
+
+            <ColumnDefinition Width="76*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="1.3*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Author ID:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Bottom" 
+               Height="26" Width="121"  Grid.Row="1"/>
+        <Label Content="Author:" HorizontalAlignment="Left" Margin="0,0,0,0" 
+               VerticalAlignment="Bottom" Grid.Row="2" Height="26" Width="60"/>
+
+        <TextBox x:Name="tbxAuthorId" Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" 
+                Text="{Binding SelectedAuthorAll.AuthorId}"/>
+        <TextBox x:Name="tbxAuthor" Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" 
+                Text="{Binding SelectedAuthorAll.Author.AuthorName}"/>
+
+        <DockPanel Grid.Column="1" LastChildFill="False" Margin="0" Grid.Row="6">
+            <!--<DockPanel.DataContext>
+                <vm:Author/>
+            </DockPanel.DataContext>-->
+            <Button x:Name="btnBookDelete" Command="{Binding BookDeleteCommand}"
+                    Content="Delete" Width="70" Margin="4,8"/>
+
+            <Button x:Name="btnClose" Content="Close" Width="76" Margin="2,8" 
+                    DockPanel.Dock="Right" Click="btnClose_Click">
+
+            </Button>
+            <Button x:Name="btnSave"  
+                Content="Save" Width="70" Margin="2,8"/>
+        </DockPanel>
+  
+    </Grid>
+</Window>

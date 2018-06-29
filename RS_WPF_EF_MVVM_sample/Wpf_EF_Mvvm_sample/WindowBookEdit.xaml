@@ -1,0 +1,69 @@
+﻿<Window x:Name="WindowsBookEdit" x:Class="Wpf_EF_Mvvm_sample.WindowBookEdit"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      
+        xmlns:local="clr-namespace:Wpf_EF_Mvvm_sample"
+        xmlns:vm="clr-namespace:Wpf_EF_Mvvm_sample"
+       
+        Title="Edit Book" Height="240" Width="460" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <ResourceDictionary>
+            <vm:MainWindowViewModel x:Key="vm" />
+        </ResourceDictionary>
+    </Window.Resources>
+    <!-- DataContext war notwendig, neben der RecourcenDictionary-->
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+    
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="37*"/>
+
+            <ColumnDefinition Width="76*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="1.3*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Buch ID:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Bottom" Height="26" Width="53"/>
+        <Label Content="Autor:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Bottom" Grid.Row="1" Height="26" Width="42"/>
+        <Label Content="Titel:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Bottom" Grid.Row="2" Height="26" Width="35"/>
+        <Label Content="Beschreibung:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Bottom" Grid.Row="3" Height="26" Width="84"/>
+        <Label Content="Preis:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Bottom" Grid.Row="4" Height="26" Width="38"/>
+        <Label Content="Veröffentlichung:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Bottom" Grid.Row="5" Height="26" Width="101"/>
+
+        <TextBox x:Name="tbxBookId" Grid.Column="1" Grid.Row="0" TextWrapping="Wrap" 
+                Text="{Binding SelectedBookAll.BookId}"/>
+        <TextBox x:Name="tbxBookAuthor" Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" 
+                Text="{Binding SelectedBookAll.Author.AuthorName}"/>
+
+        <TextBox x:Name="tbxBookTitel" Grid.Column="1" Grid.Row="2" 
+                Text="{Binding SelectedBookAll.Title}"/>
+        <TextBox x:Name="tbxBookDescription" Grid.Column="1" Grid.Row="3" 
+                Text="{Binding SelectedBookAll.Description}"/>
+        <TextBox Grid.Column="1" Grid.Row="4" 
+                Text="{Binding SelectedBookAll.Price, StringFormat=####.00 €}"/>
+        <TextBox  Grid.Column="1" Grid.Row="5" 
+                Text="{Binding SelectedBookAll.ErscheinungsJahr, StringFormat=\{0:yyyy-MM-dd\}}"/>
+
+        <DockPanel Grid.Column="1" LastChildFill="False" Margin="0" Grid.Row="6">
+            <!--<DockPanel.DataContext>
+                <vm:Author/>
+            </DockPanel.DataContext>-->
+            <Button x:Name="btnBookDelete" Command="{Binding BookDeleteCommand}"
+                    Content="Delete" Width="70" Margin="4,8"/>
+
+            <Button x:Name="btnClose" Content="Close" Width="76" Margin="2,8" 
+                    DockPanel.Dock="Right" IsCancel="True"/>
+            <Button x:Name="btnSave"  
+                Content="Save and Close" Width="106" Margin="2,8" IsDefault="True"/>
+        </DockPanel>
+    </Grid>
+</Window>

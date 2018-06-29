@@ -1,0 +1,168 @@
+﻿<Window x:Class="Wpf_EF_Mvvm_sample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Wpf_EF_Mvvm_sample"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        Title="MainWindow" Height="600" Width="800" WindowStartupLocation="CenterScreen">
+
+    <!-- Ohne Einbindung der Resourcen kommt es bei InitializeComponents zu einer Expception
+-->
+    <Window.Resources>
+        <ResourceDictionary>
+            <vm:MainWindowViewModel x:Key="vm" />
+            
+        </ResourceDictionary>
+    </Window.Resources>
+    <!-- DataContext war notwendig, neben der RecourcenDictionary-->
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="2*"/>
+
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="150" />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+
+        <ComboBox DisplayMemberPath="AuthorName" ItemsSource="{Binding Autoren}"
+                      Grid.Row="0" Grid.Column="0" x:Name="combo_Author" 
+                  SelectedItem="{Binding SelectedAuthor}" >
+        </ComboBox>
+
+        <ComboBox DisplayMemberPath="Title" ItemsSource="{Binding SelectedAuthor.Books}"
+                      Grid.Row="0" Grid.Column="1"  x:Name="combo_Books" 
+                  SelectedItem="{Binding SelectedBook}">
+            <!--<ComboBox.DataContext>
+                <vm:MainWindowViewModel/>
+            </ComboBox.DataContext>-->
+        </ComboBox>
+
+
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                   Name="tbDesc" Text="{Binding SelectedBook.Description}"/>
+
+        <StackPanel Grid.Row="4" MinHeight="4" Orientation="Horizontal" >
+            <Button x:Name="btnAuthorDelete" 
+                    Command="{Binding AuthorDeleteCommand}"
+                    Content="Author Del" Width="70" Margin="2,8"/>
+
+            <Button x:Name="btnAuthorNew" Command="{Binding AuthorNewCommand}"
+                    Content="Author New" Width="70" Margin="2,8"/>
+
+            <Button x:Name="btnAuthorSave" Command="{Binding AuthorSaveCommand}" 
+                    Content="Author Save" Width="70" Margin="2,8"/>
+        </StackPanel>
+        <DockPanel Grid.Column="1" LastChildFill="False" Margin="0" Grid.Row="4">
+            <!--<DockPanel.DataContext>
+                <vm:Author/>
+            </DockPanel.DataContext>-->
+            <Button x:Name="btnBookDelete" Command="{Binding BookDeleteCommand}"
+                    Content="Book Del" Width="70" Margin="2,8"/>
+            <Button x:Name="btnBookNew"    Command="{Binding BookNewCommand}"
+                    Content="Book New" Width="70" Margin="2,8"/>
+
+            <Button x:Name="btnBookEdit" Command="{Binding BookEditCommand}" 
+                    Content="Book Edit" Width="70" Margin="2,8"/>
+
+            <Button x:Name="btnClose" Content="Close App" Width="76" Margin="2,8" 
+                    DockPanel.Dock="Right" Click="btnClose_Click">
+
+            </Button>
+            <Button x:Name="btnOpenBookEdit"  
+                Content="Open Book Edit" Width="70" Margin="2,8" Click="btnOpenBookEdit_Click"/>
+        </DockPanel>
+        <DataGrid x:Name="dataGridAuthor" Grid.Row="2" ItemsSource="{Binding Autoren}"
+                  SelectedItem="{Binding Path=SelectedAuthorAll, Mode=TwoWay}"
+                  IsSynchronizedWithCurrentItem ="True"
+                  AutoGenerateColumns="True" 
+                  SelectionMode="Single"
+                  MouseDoubleClick="Author_Row_MouseDoubleClick" IsReadOnly="True">
+        </DataGrid>
+        <DataGrid x:Name="dataGridBooks" Grid.Column="1" Grid.Row="2" 
+                  ItemsSource="{Binding BooksAll}" 
+                  SelectedItem="{Binding Path=SelectedBookAll, Mode=TwoWay}"
+                  IsSynchronizedWithCurrentItem ="True"
+                  AutoGenerateColumns="False" 
+                  SelectionMode="Single" IsReadOnly="True">
+           
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding BookMouseDoubleClickCommand}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            
+            <DataGrid.Columns>
+
+                <DataGridTextColumn Binding="{Binding BookId}" Header="Buch ID">
+                    <DataGridTextColumn.CellStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextAlignment" Value="Right" />
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Binding="{Binding Author.AuthorName}" ClipboardContentBinding="{x:Null}" Header="Autor"/>
+                <DataGridTextColumn Binding="{Binding Title}" ClipboardContentBinding="{x:Null}" Header="Title"/>
+                <DataGridTextColumn Binding="{Binding Description}" ClipboardContentBinding="{x:Null}" Header="Beschreibung"/>
+                <DataGridTextColumn Binding="{Binding Price, StringFormat=####.00 €}" 
+                                    Width =" 50 " ClipboardContentBinding="{x:Null}" Header="Preis">
+                    <DataGridTextColumn.CellStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextAlignment" Value="Right" />
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding ErscheinungsJahr, StringFormat=\{0:yyyy-MM-dd\}}" ClipboardContentBinding="{x:Null}" Header="Veröffentlichung"/>
+            </DataGrid.Columns>
+            <!--<DataGrid.DataContext>
+                <vm:MainWindowViewModel/>
+            </DataGrid.DataContext>-->
+        </DataGrid>
+        <Grid x:Name="gridBookDetails" Grid.Column="1" Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="49*"/>
+                <ColumnDefinition Width="83*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label Content="Buch ID:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Bottom"/>
+            <Label Content="Autor:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Bottom" Grid.Row="1"/>
+            <Label Content="Titel:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Bottom" Grid.Row="2"/>
+            <Label Content="Beschreibung:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Bottom" Grid.Row="3"/>
+            <Label Content="Preis:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Bottom" Grid.Row="4"/>
+            <Label Content="Veröffentlichung:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Bottom" Grid.Row="5"/>
+            <TextBox x:Name="tbxBookId" Grid.Column="1" Grid.Row="0" TextWrapping="Wrap" 
+                Text="{Binding SelectedBookAll.BookId}"/>
+            <!--Text="{Binding ElementName=dataGridBooks, Path=SelectedItem[BookId], UpdateSourceTrigger=Default}"-->
+            <TextBox x:Name="tbxBookAuthor" Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" 
+                Text="{Binding SelectedBookAll.Author.AuthorName}"/>
+
+            <TextBox x:Name="tbxBookTitel" Grid.Column="1" Grid.Row="2" 
+                Text="{Binding SelectedBookAll.Title}"/>
+            <TextBox x:Name="tbxBookDescription" Grid.Column="1" Grid.Row="3" 
+                Text="{Binding SelectedBookAll.Description}"/>
+            <TextBox Grid.Column="1" Grid.Row="4" 
+                Text="{Binding SelectedBookAll.Price, StringFormat=####.00 €}"/>
+            <TextBox  Grid.Column="1" Grid.Row="5" 
+                Text="{Binding SelectedBookAll.ErscheinungsJahr, StringFormat=\{0:yyyy-MM-dd\}}"/>
+
+
+        </Grid>
+      
+    </Grid>
+</Window>
